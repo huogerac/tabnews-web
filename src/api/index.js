@@ -1,5 +1,6 @@
 import axios from 'axios'
 import settings from '@/settings'
+import router from '@/router'
 
 const api = axios.create({
   baseURL: settings.apiBaseUrl,
@@ -25,18 +26,14 @@ export function responseSuccess(response) {
 
 export function responseError(error) {
   if (!error.response) {
-    console.log('Error 500')
+    router.push({ name: '500', params: { error } })
   }
 
   if (error.response && error.response.status == 401) {
-    let message = 'Authentication Error (401)'
-    if (error.response.data) {
-      message = error.response.data.detail
-    }
-    console.log(message)
+    router.push({ name: 'login' })
   }
   if (error.response && error.response.status == 403) {
-    console.log('Error 403')
+    router.push({ name: '403' })
   }
   return Promise.reject(error)
 }

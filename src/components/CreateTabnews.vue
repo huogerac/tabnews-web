@@ -15,7 +15,7 @@
           <v-toolbar-title>Create Tabnews</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
-            <v-btn dark text @click="onClose">
+            <v-btn dark text @click="createTabnews">
               <v-icon class="px-2">far fa-save</v-icon> Save
             </v-btn>
           </v-toolbar-items>
@@ -51,6 +51,16 @@
         </v-card-text>
       </v-card>
     </v-dialog>
+
+    <!-- SNACKBAR TOAST -->
+    <v-snackbar v-model="snackbar" :vertical="true" :top="true">
+      {{ snackbar_text }}
+      <template v-slot:action="{ attrs }">
+        <v-btn color="blue" text v-bind="attrs" @click="snackbar = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -67,12 +77,24 @@ export default {
       (v) => v.split(' ').length > 3 || 'Add an awesome title',
     ],
     description: null,
+    snackbar: false,
+    snackbar_text: '',
   }),
   methods: {
     createTabnews() {
-      TabnewsApi.list().then((response) => {
-        this.tabnewsList = response
-      })
+      TabnewsApi.create(this.title, this.description)
+        .then((response) => {
+          console.log(response)
+          this.$emit('onCreated')
+        })
+        .catch((error) => {
+          if (error && error.response && error.response.status == 400) {
+            const errorText = error.response.data.detail || error
+            this.snackbar_text = `Opps! ${errorText}`
+            this.snackbar = true
+            return
+          }
+        })
     },
     onClose() {
       this.$emit('onClose')

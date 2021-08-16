@@ -28,6 +28,7 @@
     <create-tabnews
       :showDialog="showCreateTabnewsDialog"
       @onClose="showCreateTabnewsDialog = false"
+      @onCreated="updateList"
     >
     </create-tabnews>
   </v-container>
@@ -50,6 +51,10 @@ export default {
       TabnewsApi.list().then((response) => {
         this.tabnewsList = response
       })
+    },
+    updateList() {
+      this.getTabnews()
+      this.showCreateTabnewsDialog = false
     },
   },
   created() {
