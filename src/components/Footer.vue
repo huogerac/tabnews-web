@@ -10,6 +10,10 @@
       >
         {{ apiBaseUrl }} — <strong>{{ version }}</strong> -
         {{ nodeEnv }}
+        <v-btn x-small text :href="`${apiBaseUrl}/api`" target="_blank">
+          <span class="white--text text-none">Tabsnews OpenAPI Spec </span>
+          <v-icon class="white--text pl-2">fas fa-passport</v-icon>
+        </v-btn>
       </v-col>
     </v-row>
   </v-footer>

@@ -55,11 +55,6 @@
     <!-- SNACKBAR TOAST -->
     <v-snackbar v-model="snackbar" :vertical="true" :top="true">
       {{ snackbar_text }}
-      <template v-slot:action="{ attrs }">
-        <v-btn color="blue" text v-bind="attrs" @click="snackbar = false">
-          Close
-        </v-btn>
-      </template>
     </v-snackbar>
   </v-container>
 </template>

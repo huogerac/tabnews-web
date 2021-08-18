@@ -10,7 +10,14 @@
             Log in to Tabnews
           </h1>
           <p class="pt-4">
-            <v-btn rounded color="grey darken-3" dark x-large @click="login">
+            <v-btn
+              :loading="loading"
+              rounded
+              color="grey darken-3"
+              dark
+              x-large
+              @click="login"
+            >
               <v-icon class="white--text pr-2">fab fa-github</v-icon>
               <span class="white--text text-none">Continue with GitHub</span>
             </v-btn>
@@ -31,7 +38,9 @@
 import settings from '@/settings'
 
 export default {
-  data: () => ({}),
+  data: () => ({
+    loading: false,
+  }),
   computed: {
     apiUrl() {
       if (!settings.apiBaseUrl || settings.apiBaseUrl == '/') {
@@ -42,6 +51,7 @@ export default {
   },
   methods: {
     login() {
+      this.loading = true
       window.location.href = `${this.apiUrl}/api/auth/github/login`
     },
     home() {
