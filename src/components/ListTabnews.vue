@@ -3,6 +3,26 @@
     <v-btn rounded primary @click="showCreateTabnewsDialog = true">
       <v-icon class="px-2">fa-plus-circle fa-sm</v-icon> Post a Tabnews
     </v-btn>
+
+    <v-row
+      v-if="loading"
+      class="fill-height"
+      align-content="center"
+      justify="center"
+    >
+      <v-col class="text-subtitle-1 text-center" cols="12">
+        Getting Tabnews...
+      </v-col>
+      <v-col cols="6">
+        <v-progress-linear
+          color="blue accent-4"
+          indeterminate
+          rounded
+          height="6"
+        ></v-progress-linear>
+      </v-col>
+    </v-row>
+
     <v-list three-line>
       <template v-for="(item, index) in tabnewsList">
         <v-list-item :key="item.title">
@@ -43,13 +63,16 @@ export default {
   name: 'TabnewsList',
 
   data: () => ({
+    loading: false,
     tabnewsList: [],
     showCreateTabnewsDialog: false,
   }),
   methods: {
     getTabnews() {
+      this.loading = true
       TabnewsApi.list().then((response) => {
         this.tabnewsList = response
+        this.loading = false
       })
     },
     updateList() {
